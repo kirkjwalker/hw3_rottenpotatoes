@@ -31,3 +31,22 @@ When /I (un)?check the following ratings: (.*)/ do |uncheck, rating_list|
     ratings_array.each {|rating| check("ratings_#{rating.strip}")}
   end
 end
+
+Then /(?:|I ) should see (all|none) of the movies/ do |all_or_none|
+  movies = Movie.find(:all,:select => 'title')
+  count_of_movies_on_page = 0
+  movies.each {|movie|
+    count_of_movies_on_page += 1 if page.has_content?(movie.title)
+  }
+  if (all_or_none == "all")
+    puts "count of movies: " + count_of_movies_on_page.to_s
+    num_of_movies_in_movie_table = Movie.count('title')
+    assert num_of_movies_in_movie_table == count_of_movies_on_page
+  elsif (all_or_none == "none")
+    puts "count of movies: " + count_of_movies_on_page.to_s
+    assert count_of_movies_on_page == 0
+  else assert false
+  end
+end
+
+

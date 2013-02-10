@@ -41,12 +41,12 @@ Scenario: restrict to movies with 'PG' or 'R' ratings
   And I should not see "Chocolat"
   And I should not see "The Help"
 
-@wip
 Scenario: no ratings selected
   Given I uncheck the following ratings: PG, R, G, PG-13
+  And I press "ratings_submit"
   Then I should see none of the movies
 
-@wip
 Scenario: all ratings selected
   Given I check the following ratings: PG, R, G, PG-13
-  Then I should see none of the movies
+  And I press "ratings_submit"
+  Then I should see all of the movies
