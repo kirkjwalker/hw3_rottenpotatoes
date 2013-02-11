@@ -39,14 +39,16 @@ Then /(?:|I ) should see (all|none) of the movies/ do |all_or_none|
     count_of_movies_on_page += 1 if page.has_content?(movie.title)
   }
   if (all_or_none == "all")
-    puts "count of movies: " + count_of_movies_on_page.to_s
     num_of_movies_in_movie_table = Movie.count('title')
     assert num_of_movies_in_movie_table == count_of_movies_on_page
   elsif (all_or_none == "none")
-    puts "count of movies: " + count_of_movies_on_page.to_s
     assert count_of_movies_on_page == 0
   else assert false
   end
 end
 
-
+Then /(?:|I ) should see '([^']*)' before '([^']*)'/ do |first_title,second_title|
+  pos_of_first_title = page.body =~ /#{first_title}/
+  pos_of_second_title = page.body =~ /#{second_title}/
+  assert pos_of_first_title < pos_of_second_title
+end
